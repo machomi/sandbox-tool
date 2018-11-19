@@ -7,5 +7,12 @@ pipeline {
                 sh "git status"
             }
         }
+        stage ("build-docker") {
+            steps {
+                script {
+                    sh "docker -v"
+                }
+            }
+        }
     }
 }
