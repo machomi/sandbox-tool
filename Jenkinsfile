@@ -1,19 +1,21 @@
 pipeline {
-    agent any
+    agent {
+        label 'master'
+    }
+
+     parameters {
+        string(name: 'VERSION', defaultValue: 'latest', description: 'Verion number used by docker image')
+     }
+
     stages {
-        stage ("prepare") {
-            steps {
-                sh "env"
-                sh "git status"
-            }
-        }
         stage ("build-docker") {
-            agent {
-                label 'slave'
-            }
             steps {
                 script {
-                    sh "docker -v"
+                    sh '''
+                    echo $VERSION
+                    '''
+                    sh "docker build -t sandbox-tool:${params.VERSION} ."
+                    sh "docker images"
                 }
             }
         }
